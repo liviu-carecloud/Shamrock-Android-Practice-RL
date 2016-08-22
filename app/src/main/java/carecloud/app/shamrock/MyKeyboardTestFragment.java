@@ -41,7 +41,7 @@ public class MyKeyboardTestFragment extends Fragment {
 
         KeyboardBinderHelper mBinder = new KeyboardBinderHelper(getActivity(),
                                                                 (KeyboardView) mRootView.findViewById(R.id.keyboard),
-                                                                Constants.LANG_ES,
+                                                                Utility.retrieveSelectedLanguageId(getActivity()),
                                                                 mEdits);
         // bind edits to the keyboard
         mBinder.bindEditsToKeyboard();

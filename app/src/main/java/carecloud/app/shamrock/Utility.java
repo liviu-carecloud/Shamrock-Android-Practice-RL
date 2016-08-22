@@ -11,15 +11,28 @@ public class Utility {
 
     private static final String SHARED_PREF_SEL_LANG_KEY = "sel_lang";
 
-    public static void saveSelectedLanguage(Activity activity, String selLang) {
+    public static void saveSelectedLanguageId(Activity activity, int selLangId) {
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(SHARED_PREF_SEL_LANG_KEY, selLang);
+        editor.putInt(SHARED_PREF_SEL_LANG_KEY, selLangId);
         editor.apply();
     }
 
-    public String retrieveSelectedLanguage(Activity activity) {
+    public static int retrieveSelectedLanguageId(Activity activity) {
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
-        return sharedPref.getString(SHARED_PREF_SEL_LANG_KEY, "English");
+        return sharedPref.getInt(SHARED_PREF_SEL_LANG_KEY, Constants.LANG_EN);
+    }
+
+    // todo make function to extract all language codes
+    /**
+     * Maps language to its code as per json
+     */
+    public static int getLanguageCode(String l) {
+        if(l.equals("Español")) {
+            return Constants.LANG_ES;
+        }
+        return Constants.LANG_EN; // english id by default
+
+
     }
 }

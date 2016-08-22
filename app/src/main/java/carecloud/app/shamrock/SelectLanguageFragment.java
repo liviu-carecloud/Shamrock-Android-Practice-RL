@@ -3,8 +3,8 @@ package carecloud.app.shamrock;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,9 +23,9 @@ import carecloud.app.shamrock.model.Option;
 public class SelectLanguageFragment extends Fragment implements
                                                      AdapterView.OnItemSelectedListener {
 
-    private static final String LOG_TAG               = SelectLanguageFragment.class.getSimpleName();
-    public static final  String LANG_OPTIONS          = "lang_options";
-    public static final  String SCREEN_TITLE          = "title";
+    private static final String LOG_TAG      = SelectLanguageFragment.class.getSimpleName();
+    public static final  String LANG_OPTIONS = "lang_options";
+    public static final  String SCREEN_TITLE = "title";
 
     private String[] mLanguages;
     private String   mSelectedLanguage;
@@ -79,8 +79,8 @@ public class SelectLanguageFragment extends Fragment implements
         spinner.setOnItemSelectedListener(this);
         // set spinner to the default
         int position = 0;
-        if(adapter != null) {
-            if(mSelectedLanguage != null) {
+        if (adapter != null) {
+            if (mSelectedLanguage != null) {
                 position = adapter.getPosition(mSelectedLanguage);
             }
             spinner.setSelection(position);
@@ -91,10 +91,18 @@ public class SelectLanguageFragment extends Fragment implements
             @Override
             public void onClick(View view) {
                 // save selection
-                Utility.saveSelectedLanguage(getActivity(), mSelectedLanguage);
+                Utility.saveSelectedLanguageId(getActivity(), Utility.getLanguageCode(mSelectedLanguage));
 
-                // test
-                Snackbar.make(view, mSelectedLanguage, Snackbar.LENGTH_SHORT).show();
+                // move to the next fragment
+                FragmentManager fm = getFragmentManager();
+                MyKeyboardTestFragment fragment = (MyKeyboardTestFragment) fm.findFragmentByTag("keyboard");
+                if(fragment == null) {
+                    fragment = new MyKeyboardTestFragment();
+                }
+                fm.beginTransaction()
+                        .replace(R.id.fragment_holder, fragment, "keyboard")
+                        .addToBackStack("to_input_credendials")
+                        .commit();
             }
         });
 
@@ -129,7 +137,7 @@ public class SelectLanguageFragment extends Fragment implements
     public static class LangOptionsBundle {
 
         private Option[] mLangOptions;
-        private String[]         mLanguages;
+        private String[] mLanguages;
 
         public LangOptionsBundle(Option[] languageOptions) {
             mLangOptions = languageOptions;

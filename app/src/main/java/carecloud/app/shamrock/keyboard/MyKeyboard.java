@@ -104,8 +104,12 @@ public class MyKeyboard implements KeyboardView.OnKeyboardActionListener {
                 // hide keyboard
                 toggleVisible(false);
                 break;
+            case -66:
+                mTargetEditor.addChar((int)'ñ'); // todo refactor
+                break;
             default:
-                char code = (char) primaryCode;
+                int code = primaryCode;
+                Log.v(LOG_TAG, "code :" + code);
                 if (Character.isLetter(code) && mCaps) {
                     code = Character.toUpperCase(code);
                 }
